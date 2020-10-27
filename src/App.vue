@@ -11,9 +11,9 @@
     </div>
     <span></span>
     <div class="container">
-      <div
-        class="columns is-desktop is-mobile is-tablet is-multiline is-centered"
-      ></div>
+      <div class="columns is-desktop is-mobile is-tablet is-multiline is-centered">
+        <user v-for="user of users" v-bind:key="user.id" v-bind:user="user" />
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ import User from "./components/User";
 export default {
   name: "App",
   components: {
-    User, // user
+    User // user
   },
   data: function () {
     return {

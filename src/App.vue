@@ -27,7 +27,7 @@
       <div
         class="columns is-desktop is-mobile is-tablet is-multiline is-centered"
       >
-        <user v-for="user of users" v-bind:key="user.id" v-bind:user="user" />
+        <user @showModal="showModal" v-for="user of users" v-bind:key="user.id" v-bind:user="user" />
       </div>
     </div>
     <nav
@@ -66,6 +66,8 @@ export default {
       page: 1,
       pages: 1,
       search: "",
+      modal:  false, 
+      currentUser: {}
     };
   },
   create() {
@@ -95,6 +97,14 @@ export default {
     searchData() {
       this.page = 1;
       this.fetch();
+    },
+    showModal(id) {
+      this.fetchOne(id)
+    },
+    async fetchOne(id) {
+      let result = await axios.get(`https://rickandmortyapi.com/api/character/${id}/`)
+      this.currentUser = result.data  
+      this.modal = true 
     }
   },
 };

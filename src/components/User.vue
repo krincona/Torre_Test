@@ -6,7 +6,7 @@
       </div>
       <div class="card-content">
         <h3 class="title is-size-4">{{ user.name }}</h3>
-        <button class="button is-rounded is-small is-info">More</button>
+        <button class="button is-rounded is-small is-info" @click="showMore(user.id)">More</button>
       </div>
     </div>
   </div>
@@ -15,5 +15,10 @@
 <script>
 export default {
   props: ["user"],
+  methods: {
+    showMore(id) {
+      this.$emit("showModal", id);
+    },
+  },
 };
 </script>

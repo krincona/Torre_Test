@@ -3,7 +3,9 @@
     <div class="hero is-dark is-bold m-4">
       <div class="hero-body">
         <div class="title"><span class="is-white">Rick and Morty </span></div>
-        <div class="subtitle"><span class="is-white">Basic Information Cards</span></div>
+        <div class="subtitle">
+          <span class="is-white">Basic Information Cards</span>
+        </div>
 
         <div class="field has-addons is-pulled-right">
           <div class="control">
@@ -36,45 +38,69 @@
       </div>
     </div>
     <nav
-      class="pagination is-centered"
-      role="navegation"
+      class="level pagination is-centered"
+      role="navigation"
       aria-label="pagination"
     >
-      <a class="button pagination-previous" v-on:click="changePage(page - 1)"
-        >Back</a
-      >
-      <ul class="pagination-list">
-        <li>
-          <a class="button pagination-link is-current">{{ page }}</a>
-        </li>
-      </ul>
-      <a class="button pagination-next" v-on:click="changePage(page + 1)">
-        Next</a
-      >
+      <div class="buttons level-item">
+        <div class="control">
+          <a
+            class="button pagination-previous"
+            v-on:click="changePage(page - 1)"
+          >
+            Back
+          </a>
+        </div>
+        <div class="control">
+          <ul class="pagination-list">
+            <li>
+              <a class="button pagination-link is-current">{{ page }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="control">
+          <a class="button pagination-next" v-on:click="changePage(page + 1)">
+            Next
+          </a>
+        </div>
+      </div>
     </nav>
 
     <div class="modal" :class="{ 'is-active': modal }" v-if="modal">
       <div class="modal-background" @click="modal = false"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">{{ currentUser.name }}</p>
+          <p class="modal-card-title">
+            <em>{{ currentUser.name }}</em>
+          </p>
         </header>
         <div class="modal-card-body">
-          <p>Gender:</p>
-          <p>{{ currentUser.gender }}</p>
-
-          <p>Status:</p>
-          <p>{{ currentUser.status }}</p>
-
-          <p>Species:</p>
-          <p>{{ currentUser.species }}</p>
-
-          <p>Type:</p>
-          <p>{{ currentUser.type }}</p>
+          <div class="columns is-mobile">
+            <div class="column">
+              <p>Gender:</p>
+              <p>Status:</p>
+              <p>Species:</p>
+              <p>Type:</p>
+            </div>
+            <div class="column">
+              <p>
+                <strong>{{ currentUser.gender }}</strong>
+              </p>
+              <p>
+                <strong>{{ currentUser.status }}</strong>
+              </p>
+              <p>
+                <strong>{{ currentUser.species }}</strong>
+              </p>
+              <p>
+                <strong>{{ currentUser.type }}</strong>
+              </p>
+            </div>
+          </div>
         </div>
 
-        <footer class="modal-card-foot">
-          <button class="button" @click="modal = false">Close</button>
+        <footer class="modal-card-foot buttons is-right">
+          <button class="button is-info" @click="modal = false">Close</button>
         </footer>
       </div>
     </div>
@@ -101,6 +127,9 @@ export default {
       currentUser: {},
     };
   },
+  mounted() {
+    this.fetch();
+  },
   create() {
     this.fetch();
   },
@@ -108,6 +137,7 @@ export default {
     fetch() {
       const params = {
         page: this.page,
+        pages: this.pages,
         name: this.search,
       };
       let result = axios

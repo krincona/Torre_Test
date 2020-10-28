@@ -2,8 +2,8 @@
   <div id="app">
     <div class="hero is-dark is-bold m-4">
       <div class="hero-body">
-        <div class="title"><span class="is-white">Users</span></div>
-        <div class="subtitle"><span class="is-white">Skills</span></div>
+        <div class="title"><span class="is-white">Rick and Morty </span></div>
+        <div class="subtitle"><span class="is-white">Basic Information Cards</span></div>
 
         <div class="field has-addons is-pulled-right">
           <div class="control">
@@ -27,7 +27,12 @@
       <div
         class="columns is-desktop is-mobile is-tablet is-multiline is-centered"
       >
-        <user @showModal="showModal" v-for="user of users" v-bind:key="user.id" v-bind:user="user" />
+        <user
+          @showModal="showModal"
+          v-for="user of users"
+          v-bind:key="user.id"
+          v-bind:user="user"
+        />
       </div>
     </div>
     <nav
@@ -47,6 +52,32 @@
         Next</a
       >
     </nav>
+
+    <div class="modal" :class="{ 'is-active': modal }" v-if="modal">
+      <div class="modal-background" @click="modal = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">{{ currentUser.name }}</p>
+        </header>
+        <div class="modal-card-body">
+          <p>Gender:</p>
+          <p>{{ currentUser.gender }}</p>
+
+          <p>Status:</p>
+          <p>{{ currentUser.status }}</p>
+
+          <p>Species:</p>
+          <p>{{ currentUser.species }}</p>
+
+          <p>Type:</p>
+          <p>{{ currentUser.type }}</p>
+        </div>
+
+        <footer class="modal-card-foot">
+          <button class="button" @click="modal = false">Close</button>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -66,18 +97,18 @@ export default {
       page: 1,
       pages: 1,
       search: "",
-      modal:  false, 
-      currentUser: {}
+      modal: false,
+      currentUser: {},
     };
   },
   create() {
     this.fetch();
   },
-  methods: {  
+  methods: {
     fetch() {
       const params = {
         page: this.page,
-        name: this.search
+        name: this.search,
       };
       let result = axios
         .get("https://rickandmortyapi.com/api/character/", { params })
@@ -99,13 +130,15 @@ export default {
       this.fetch();
     },
     showModal(id) {
-      this.fetchOne(id)
+      this.fetchOne(id);
     },
     async fetchOne(id) {
-      let result = await axios.get(`https://rickandmortyapi.com/api/character/${id}/`)
-      this.currentUser = result.data  
-      this.modal = true 
-    }
+      let result = await axios.get(
+        `https://rickandmortyapi.com/api/character/${id}/`
+      );
+      this.currentUser = result.data;
+      this.modal = true;
+    },
   },
 };
 </script>

@@ -4,9 +4,22 @@
       <div class="hero-body">
         <div class="title"><span class="is-white">Users</span></div>
         <div class="subtitle"><span class="is-white">Skills</span></div>
-        <button class="button is-rounded is-info" v-on:click="fetch">
-          Find
-        </button>
+
+        <div class="field has-addons is-pulled-right">
+          <div class="control">
+            <input
+              v-model="search"
+              type="text"
+              class="input is-rounded"
+              v-on:keyup.enter="searchData"
+            />
+          </div>
+          <div class="control">
+            <button class="button is-rounded is-info" v-on:click="searchData">
+              Search
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <span></span>
@@ -17,14 +30,22 @@
         <user v-for="user of users" v-bind:key="user.id" v-bind:user="user" />
       </div>
     </div>
-    <nav class="pagination is-centered" role="navegation" aria-label="pagination">
-      <a class="button pagination-previous" v-on:click="changePage(page - 1)">Back</a>
+    <nav
+      class="pagination is-centered"
+      role="navegation"
+      aria-label="pagination"
+    >
+      <a class="button pagination-previous" v-on:click="changePage(page - 1)"
+        >Back</a
+      >
       <ul class="pagination-list">
         <li>
           <a class="button pagination-link is-current">{{ page }}</a>
         </li>
       </ul>
-      <a class="button pagination-next" v-on:click="changePage(page + 1)"> Next</a>
+      <a class="button pagination-next" v-on:click="changePage(page + 1)">
+        Next</a
+      >
     </nav>
   </div>
 </template>
@@ -44,15 +65,17 @@ export default {
       users: [],
       page: 1,
       pages: 1,
+      search: "",
     };
   },
   create() {
     this.fetch();
   },
-  methods: {
+  methods: {  
     fetch() {
       const params = {
-        page: this.page
+        page: this.page,
+        name: this.search
       };
       let result = axios
         .get("https://rickandmortyapi.com/api/character/", { params })
@@ -66,9 +89,13 @@ export default {
         });
     },
     changePage(page) {
-      this.page = (page <= 0 || page > this.pages)  ? this.page : page 
+      this.page = page <= 0 || page > this.pages ? this.page : page;
       this.fetch();
     },
+    searchData() {
+      this.page = 1;
+      this.fetch();
+    }
   },
 };
 </script>
